@@ -23,6 +23,11 @@ logger.setLevel(DEBUG)
 logger.addHandler(StreamHandler())
 
 
+def bot_directory_path(instance, filename):
+	# file will be uploaded to MEDIA_ROOT/<bot>/<filename>,aiml
+	return os.path.join(dirname(BASE_DIR), 'program-y/bots', '{0}/{1}.aiml'.format(instance.bot.slug, instance.name))
+
+
 def _mkdir_p(path):
 	"""mkdir -p path"""
 	try:
@@ -58,6 +63,12 @@ def _rewrite_and_copy(src_file, dst_file, project_name):
 def _relative_path(absolute_path):
 	current_path = os.getcwd()
 	return absolute_path.split(current_path)[1][1:]
+
+
+def run_client(project_name):
+	with open(os.path.join(dirname(BASE_DIR), 'program-y/bots', project_name, '{}-rest.sh'.format(project_name)), 'rb') as file:
+		script = file.read()
+		rc = subprocess.call(script, shell=True)
 
 
 def generate_bot(data):
@@ -138,7 +149,4 @@ def generate_bot(data):
 				)
 
 	logger.info('Finish generating project files.')
-	
-	with open(os.path.join(dirname(BASE_DIR), 'program-y/bots', project_name, '{}-rest.sh'.format(project_name)), 'rb') as file:
-		script = file.read()
-		rc = subprocess.call(script, shell=True)
+	run_client(project_name)

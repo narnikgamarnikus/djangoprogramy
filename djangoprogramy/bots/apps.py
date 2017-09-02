@@ -6,8 +6,4 @@ class BotsConfig(AppConfig):
     verbose_name = "Bots"
 
     def ready(self):
-        """Override this to put in:
-            Users system checks
-            Users signal registration
-        """
-        pass
+    	import .signals
