@@ -6,4 +6,5 @@ class BotsConfig(AppConfig):
     verbose_name = "Bots"
 
     def ready(self):
-    	import .signals
+    	pass
+    	#import .signals
